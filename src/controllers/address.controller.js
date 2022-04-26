@@ -1,6 +1,5 @@
 const express = require("express");
 const Address = require("../model/address.model");
-
 const router = express.Router();
 const Data = require('../model/data.model')
 async function residentHere(Address, resident = []){ 
