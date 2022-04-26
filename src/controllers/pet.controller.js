@@ -10,7 +10,7 @@ router.get('/all', async(req,res)=>{
         return res.status(500).json(err);
     }
 })
-router.post('/', async(req,res)=>{
+router.post('/post', async(req,res)=>{
     try {
         const pet = await Pet.create(req.body);
         return res.status(200).json(pet);
