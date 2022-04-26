@@ -14,7 +14,9 @@ router.get('/all', async(req,res)=>{
 router.post('/post', async(req,res)=>{
     try {
         const pet = await Pet.create(req.body);
-        const data = await Data.findOneAndUpdate({userId : pet.userId[1]}, {reqPets : [pet._id]}, {new : true} ).lean().exec();
+        const dd = await Data.findOne({addressId : pet.userId[1]}).lean().exec();
+        let arrayOfReq = dd.reqPets.length > 0 ? [dd.reqPets, pet._id ] : [pet._id];
+        const data = await Data.findOneAndUpdate({addressId : pet.userId[1]}, {reqPets : arrayOfReq}, {new : true} ).lean().exec();
         return res.status(200).send({pet, data});
     }
     catch (err) {

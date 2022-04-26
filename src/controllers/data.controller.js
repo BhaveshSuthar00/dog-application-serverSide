@@ -19,7 +19,9 @@ router.post("/post", async (req, res) => {
 router.get('/all', async (req, res) => {
   try {
     const DataData = await Data.find()
-    .populate({path : 'addressId'})
+    .populate({path : 'addressId' })
+    .populate('reqPets')
+    .populate('Pets')
     .lean()
     .exec();
     return res.status(200).json(DataData);
@@ -33,7 +35,7 @@ router.get("/:id", async (req, res) => {
   try {
     const flatID = req.params.id;
     const address = await Address.findOne({userId: flatID}).select({city : 1, capacity : 1, rating : 1, houseUrl : 1}).lean().exec();
-    const Data2 = await Data.findOne({addressId : flatID}).populate([{path : 'addressId', select : ["firstName", "lastName", "type"]}]).select({flatId : 0}).lean().exec();
+    const Data2 = await Data.findOne({addressId : flatID}).populate([{path : 'addressId', select : ["firstName", "lastName", "type"]}]).select({flatId : 0}).populate('reqPets').populate('Pets').lean().exec();
     const final = {...address, ...Data2}
 
     return res.status(200).json(final);
@@ -56,7 +58,7 @@ router.patch('/reqtolist/:id', async (req, res) => {
     }), 
       Pets :  pet.length>0 ? [...pet, redDd] : [redDd]
     }
-    const finalData = await Data.findByIdAndUpdate({_id : req.params.id}, Data2, {new : true})
+    const finalData = await Data.findByIdAndUpdate({_id : req.params.id}, Data2, {new : true}).populate("addressId").populate('reqPets').populate('Pets')
     return res.status(200).json({finalData});
   }
   catch(err) {
