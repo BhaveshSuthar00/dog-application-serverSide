@@ -11,7 +11,6 @@ async function residentHere(Address, resident = []){
     }
     return resident;
 }
-
 router.post("/post", async (req, res) => {
   try {
     const address = await Address.findOne({userId : req.body.userId}).lean().exec();
