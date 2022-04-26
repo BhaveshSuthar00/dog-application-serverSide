@@ -44,7 +44,7 @@ router.get("/:id", async (req, res) => {
     return res.status(400).json(err.message);
   }
 });
-router.patch('/reqtolist/:id', async (req, res) => {
+router.get('/reqtolist/:id', async (req, res) => {
   try {
     let query = req.query.key || 0;
     let Data2 = await Data.findById(req.params.id).lean().exec();
